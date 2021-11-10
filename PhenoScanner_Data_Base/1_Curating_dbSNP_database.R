@@ -1,0 +1,64 @@
+#######
+#INTRO#
+#######
+
+#This could is to manipulate dbSNP data to get as many SNPs as in PhenoScanner.
+#We managed to make it work quite well, but it is going to take a while.
+#Let's go:
+
+###########
+#Libraries#
+###########
+
+memory.limit(size=5000000)
+
+library(tidyverse)
+library(data.table)
+
+######################
+#Partioning big files#
+######################
+
+index <- 0
+counter <- 0
+total <- 0
+chunks <- 500000
+fileName <- "C:/Users/zlc436/Downloads/dbSNP.txt/dbSNP147_original.txt."
+
+repeat{
+  # With fread file is opened in each iteration
+  dataChunk <- fread(input = fileName, nrows=chunks, header = TRUE, fill = TRUE,                 
+                     skip = chunks*index)
+  
+  if(index == 0){
+    
+    col_ <- colnames(dataChunk)
+    
+  } else {
+    
+    colnames(dataChunk) <- col_ 
+    
+  }
+  
+  # do processing on dataChunk (i.e adding header, converting data type) 
+  
+  # Create a new file name and write to it. You can have your own logic for file names
+  fwrite(dataChunk, file = paste0("C:/Users/zlc436/Downloads/dbSNP.txt/dbSNP",index))
+  
+  #check if file end has been reached and break from repeat
+  if(nrow(dataChunk) < chunks){
+    break
+  }
+  
+  #increment the index to read next chunk
+  index = index+1
+  
+  #remove the file that I have generated cuz R will die if I don't:
+  
+  rm(dataChunk)
+  
+}
+
+checkity <- fread("C:/Users/zlc436/Downloads/dbSNP.txt/dbSNP0")
+
+
