@@ -2,7 +2,7 @@
 #INTRODUCTION#
 ##############
 
-#This code is to check what the hell is going on with some SNPs and PhenoScanner.
+#This code is to check what is going on with some SNPs and PhenoScanner.
 
 ###################
 #Loading libraries#
